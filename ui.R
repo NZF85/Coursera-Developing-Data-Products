@@ -11,6 +11,7 @@ shinyUI(
              # multi-page user-interface that includes a navigation bar.
              tabPanel("Explore the Data",
                       sidebarPanel(
+                        img(src = "oie_transparent.png", height = 72, width = 200),
                         sliderInput("timeline", 
                                     "Timeline:", 
                                     min = 1995,
@@ -22,8 +23,8 @@ shinyUI(
                                     max = 95,
                                     value = c(30, 90) 
                         ),
-                        #format = "####"),
-                        uiOutput("CountryControl"), # the id
+        
+                        uiOutput("CountryControl"), 
                         actionButton(inputId = "clearAll", 
                                      label = "Clear selection", 
                                      icon = icon("square-o")),

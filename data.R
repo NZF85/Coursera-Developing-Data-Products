@@ -67,7 +67,6 @@ groupByCountry <- function(dt, minYear, maxYear,
  
   dt <- groupByYearRate(dt, minYear, maxYear, minRate,
                          maxRate, Country) 
-  # print(dim(result))
   result <- datatable(dt, options = list(iDisplayLength = 50))
   return(result)
 }
@@ -172,22 +171,21 @@ plotRateByYear <- function(dt, dom = "RateByYear",
   RateByYear <- nPlot(
     Rate ~ Year,
     data = dt,
+    group = 'SourceType',
     type = "scatterChart",
     dom = dom, width = 650
   )
   RateByYear$chart(margin = list(left = 100), 
                      showDistX = TRUE,
                      showDistY = TRUE)
-  RateByYear$chart(color = c('green', 'orange', 'blue'))
+  RateByYear$chart(color = c('green', 'orange'))
   RateByYear$chart(tooltipContent = "#! function(key, x, y, e){ 
                      return '<h5><b>Country</b>: ' + e.point.Country + '<br>'
                      + '<b>Source</b>: ' + e.point.Source  
-                     + '</h5>'
-                     
-} !#") # data[data$Rate==y&data$Year==x, ]$name
+                     + '</h5>'} !#") 
   RateByYear$yAxis(axisLabel = yAxisLabel, width = 80)
   RateByYear$xAxis(axisLabel = xAxisLabel, width = 70)
-  #     RateByYear$chart(useInteractiveGuideline = TRUE)
+  
   RateByYear
   }
 
@@ -205,17 +203,20 @@ plotRateByYearAvg <- function(dt, dom = "RateByYearAvg",
   RateByYearAvg <- nPlot(
     avg ~ Year,
     data = dt,
-    type = "multiBarChart",
-    group = 'Country',
-    stacked = TRUE,
+    
+    type = "lineChart",
     dom = dom, width = 650
   )
   RateByYearAvg$chart(margin = list(left = 100))
-  RateByYearAvg$chart(color = c('orange', 'blue', 'green'))
+  #RateByYearAvg$chart(color = c('orange', 'blue', 'green'))
   RateByYearAvg$yAxis(axisLabel = yAxisLabel, width = 80)
   RateByYearAvg$xAxis(axisLabel = xAxisLabel, width = 70)
-  RateByYearAvg
+  RateByYearAvg$chart(useInteractiveGuideline=TRUE)
+  RateByYearAvg$yAxis(tickFormat = 
+           "#!function(d) { return d3.format(',.2f')(d) }!#"
+  )
   
+  RateByYearAvg
 }
 
 #' Plot number of average Rate by Country
@@ -239,6 +240,8 @@ plotRateByCountryAvg <- function(dt, dom = "RateByCountryAvg",
   RateByCountryAvg$yAxis(axisLabel = yAxisLabel, width = 80)
   RateByCountryAvg$xAxis(axisLabel = xAxisLabel, width = 200,
                          rotateLabels = -20, height = 200)
+  
+  
   RateByCountryAvg
   
 }
